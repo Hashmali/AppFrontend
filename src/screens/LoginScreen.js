@@ -26,13 +26,10 @@ const LoginScreen = ({ navigation }) => {
   }
 
   function check(data) {  
-    alert(phone.value)
     if(data.token)
     {
-      alert(data.token)
-      navigation.navigate('Hashmalie',{toke:data.token})
-
-    
+      navigation.navigate('Hashmalie',{toke:data.token,id:data.id})
+   
     }
     else{alert("failed to login...")}
   }
@@ -43,7 +40,7 @@ const LoginScreen = ({ navigation }) => {
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify({ username: phone.value,password:password.value })
       };
-      fetch('https://5b3a87aa4914.ngrok.io/api/worker/login/',requestOptions)
+      fetch('https://656d9eb045df.ngrok.io/api/worker/login/',requestOptions)
       .then(data=>data.json())
       .then(data=>{check(data)})
       .catch(error=>console.error(error))

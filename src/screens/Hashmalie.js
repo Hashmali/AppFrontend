@@ -12,9 +12,8 @@ import About from './About'
 import Reports from './Reports'
 import Tasks from './Tasks'
 const Tab = createMaterialBottomTabNavigator();
-function MyTabs({navigation,toke}) {
-  alert("your toke2 is")
-  alert(toke)
+function MyTabs({navigation,toke,id}) {
+
 
   return (
 		<Tab.Navigator
@@ -40,7 +39,7 @@ function MyTabs({navigation,toke}) {
     >
 	<Tab.Screen
 	name="About"
-  children={()=><About toke={toke}/>}
+  children={()=><About toke={toke} id={id}/>}
 
 	options={{
 	  tabBarLabel: 'Home',
@@ -51,7 +50,7 @@ function MyTabs({navigation,toke}) {
   />
 			<Tab.Screen
         name="Profile"
-        children={()=><Profile toke={toke}/>}
+        children={()=><Profile toke={toke} id={id}/>}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
@@ -61,7 +60,7 @@ function MyTabs({navigation,toke}) {
       />
 	  <Tab.Screen
         name="Reports"
-        children={()=><Reports toke={toke}/>}
+        children={()=><Reports toke={toke} id={id}/>}
 
         options={{
           tabBarLabel: 'Reports',
@@ -72,7 +71,7 @@ function MyTabs({navigation,toke}) {
       />
 	  <Tab.Screen
         name="Tasks"
-        children={()=><Tasks toke={toke}/>}
+        children={()=><Tasks toke={toke} id={id}/>}
 
         options={{
           tabBarLabel: 'Tasks',
@@ -86,13 +85,12 @@ function MyTabs({navigation,toke}) {
 }
 
 const Hashmalie = ({route, navigation }) => {
-  const {toke}=route.params
-  alert("your toke is")
-  alert(toke)
+  const {toke,id}=route.params
+
   return (
    <NavigationContainer independent={true} >
       
-    <MyTabs toke={toke}/>
+    <MyTabs toke={toke} id={id}/>
   </NavigationContainer>
   )
 }
