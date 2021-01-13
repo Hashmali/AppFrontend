@@ -55,7 +55,7 @@ const Item = ({ title }) => (
 	  <Text style={styles.title}>{title}</Text>
 	</View>
   );
-const Reports = () => {
+const Reports = (props) => {
 	const renderItem = ({ item }) => (
 		<Item title={item.title} />
 	  );

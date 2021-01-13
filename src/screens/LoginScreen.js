@@ -23,8 +23,37 @@ const LoginScreen = ({ navigation }) => {
       setPassword({ ...password, error: passwordError })
       return
     }
-    navigation.navigate('Hashmalie')
+    sendRequest();
   }
+
+  function check(data) {  
+    alert(phone.value)
+    if(data.token)
+    {
+      alert(data.token)
+      navigation.navigate('Hashmalie',{toke:data.token})
+
+    
+    }
+    else{alert("failed to login...")}
+  }
+  
+  function sendRequest() {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({ username: phone.value,password:password.value })
+      };
+      fetch('https://5b3a87aa4914.ngrok.io/api/worker/login/',requestOptions)
+      .then(data=>data.json())
+      .then(data=>{check(data)})
+      .catch(error=>console.error(error))
+          
+  }
+
+
+
+
 
   return (
     <Background>
@@ -38,8 +67,8 @@ const LoginScreen = ({ navigation }) => {
         error={!!phone.error}
         errorText={phone.error}
         autoCapitalize="none"
-        autoCompleteType="phone"
-        textContentType="telephoneNumber"
+     
+        
         keyboardType="numeric"
       />
       <TextInput

@@ -35,7 +35,7 @@ const DATA = [
       <Text style={styles.title}>{title}</Text>
     </View>
   );
-const Tasks = () => {
+const Tasks = (props) => {
   return (
     <SafeAreaView style={styles.container}>
     <SectionList
