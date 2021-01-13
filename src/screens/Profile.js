@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text,View,StyleSheet,Image} from 'react-native';
 import Background from '../components/Background'
-const Profile = () => {
+const Profile = (props) => {
 	return (
 		<Background>
 		<View style={{  alignItems: 'center' }}>
