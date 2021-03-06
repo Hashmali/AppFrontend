@@ -19,10 +19,14 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
     "react-native-gesture-handler": "~1.7.0",
 <<<<<<< HEAD
+    "react-native-paper": "^4.4.1",
+=======
+<<<<<<< HEAD
     "react-native-paper": "^4.7.2",
 =======
     "react-native-paper": "^4.4.1",
 >>>>>>> 4d1101d4fe015d9f2229cc42d66820804559aa80
+>>>>>>> 0e806324882abc2fa1ccd8a1e2d1d82a47dc441c
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
