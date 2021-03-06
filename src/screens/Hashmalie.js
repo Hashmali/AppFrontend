@@ -1,4 +1,4 @@
-import React from 'react'
+ import React from 'react'
 import { Text,View} from 'react-native';
 //import Background1 from '../components/Background'
 import Button from '../components/Button'
@@ -10,24 +10,43 @@ import { NavigationContainer } from '@react-navigation/native';
 import Profile from './Profile'
 import About from './About'
 import Reports from './Reports'
+import CreateReport from './CreateReport'
+
 import Tasks from './Tasks'
+import { createStackNavigator } from '@react-navigation/stack'
 const Tab = createMaterialBottomTabNavigator();
+const ReportStack=createStackNavigator()
+
+const ReportStackScreen=()=>(
+  <ReportStack.Navigator  >
+  <ReportStack.Screen name="Reports" component={Reports}   options={{
+    headerShown: false
+  }}
+  
+  />
+  <ReportStack.Screen name="CreateReport" component={CreateReport}/>
+  </ReportStack.Navigator>
+
+)
+
+
+
+
 function MyTabs({navigation,toke,id}) {
 
 
   return (
-		<Tab.Navigator
-    
-		initialRouteName="About"
+		<Tab.Navigator   
+		    initialRouteName="About"
         shifting={true}
         labeled={true}
         sceneAnimationEnabled={false}
         activeColor="white"
         inactiveColor="white"
         screenOptions={{
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            color: 'white',
+        headerTitleStyle: {
+        fontWeight: 'bold',
+         color: 'white',
           },
           headerLeft:null,
           headerStyle:{
@@ -60,7 +79,7 @@ function MyTabs({navigation,toke,id}) {
       />
 	  <Tab.Screen
         name="Reports"
-        children={()=><Reports toke={toke} id={id}/>}
+        children={()=><ReportStackScreen toke={toke} id={id}/>}
 
         options={{
           tabBarLabel: 'Reports',
