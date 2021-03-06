@@ -4,9 +4,6 @@ import {StyleSheet,Text,View,Image,FlatList} from 'react-native'
 import {Card,FAB} from 'react-native-paper'
 const Reports=({ navigation })=>{
 
-
-
-
 	const myReports = [
 		{id: '0',title: 'First Report',date:'fiwej',start_hour:'10',finish_hour:'10',
 		 project_code:'10', image:"",  description:"do this and that",},
