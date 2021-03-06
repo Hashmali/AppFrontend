@@ -6,7 +6,11 @@ const Profile = (props) => {
 		fetchItems();
 	  },[]);
 	var toke="Token " + props.toke+" "
+<<<<<<< HEAD
 	var url='https://hashmali-backend.herokuapp.com/api/worker/'+props.id+'/view/'
+=======
+	var url='https://656d9eb045df.ngrok.io/api/worker/'+props.id+'/view/'
+>>>>>>> 4d1101d4fe015d9f2229cc42d66820804559aa80
 	const requestOptions =
  	{
   		method: 'GET',
@@ -35,6 +39,10 @@ const Profile = (props) => {
 					style={styles.pic}
 					/>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4d1101d4fe015d9f2229cc42d66820804559aa80
 				<Text style={styles.text} >{items.second_name+" "+items.first_name}</Text>
 				<Text style={styles.text1} >{items.phone}</Text>
 				</View>

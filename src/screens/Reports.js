@@ -1,4 +1,5 @@
 import React from 'react'
+<<<<<<< HEAD
 import { render } from 'react-dom';
 import {StyleSheet,Text,View,Image,FlatList} from 'react-native'
 import {Card,FAB} from 'react-native-paper'
@@ -130,10 +131,14 @@ const styles=StyleSheet.create({
 import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar} from 'react-native';
 
 
+=======
+import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar} from 'react-native';
+>>>>>>> 4d1101d4fe015d9f2229cc42d66820804559aa80
 const DATA = [
 	{
 	  id: '0',
 	  title: 'First Item',
+<<<<<<< HEAD
 	  date:'fiwej',
 	  start_hour:'10',
 	  finish_hour:'10',
@@ -187,12 +192,62 @@ const DATA = [
   
 	  },
 	
+=======
+	},
+	{
+	  id: '1',
+	  title: 'Second Item',
+	},
+	{
+	  id: '2',
+	  title: 'Third Item',
+	},
+	{
+		id: '3',
+		title: 'First Item',
+	  },
+	  {
+		id: '4',
+		title: 'Second Item',
+	  },
+	  {
+		id: '5',
+		title: 'Third Item',
+	  },
+	  {
+		id: '6',
+		title: 'First Item',
+	  },
+	  {
+		id: '7',
+		title: 'Second Item',
+	  },
+	  {
+		id: '8',
+		title: 'Third Item',
+	  },
+	  {
+		  id: '9',
+		  title: 'First Item',
+		},
+		{
+		  id: '10',
+		  title: 'Second Item',
+		},
+		{
+		  id: '11',
+		  title: 'Third Item',
+		},
+>>>>>>> 4d1101d4fe015d9f2229cc42d66820804559aa80
   ];
 const Item = ({ title }) => (
 	<View style={styles.item}>
 	  <Text style={styles.title}>{title}</Text>
+<<<<<<< HEAD
 	
 	
+=======
+>>>>>>> 4d1101d4fe015d9f2229cc42d66820804559aa80
 	</View>
   );
 const Reports = (props) => {
@@ -232,4 +287,7 @@ const styles = StyleSheet.create({
   },
 });
 
+<<<<<<< HEAD
 */
+=======
+>>>>>>> 4d1101d4fe015d9f2229cc42d66820804559aa80
