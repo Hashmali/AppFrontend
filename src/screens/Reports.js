@@ -1,3 +1,4 @@
+import { useLinkProps } from '@react-navigation/native';
 import React from 'react'
 import { render } from 'react-dom';
 import {StyleSheet,Text,View,Image,FlatList} from 'react-native'
@@ -35,7 +36,11 @@ const Reports=({ navigation })=>{
 const renderList=((item)=>{
 
 	return(
-	<Card style={styles.mycard} key={item.id}>
+	<Card style={styles.mycard} key={item.id}
+		onPress={()=>navigation.push('ViewReport',{item:item})}
+	
+	
+	>
 		<View style={styles.cardView}>
 		<Text style={styles.text}>{item.title}</Text>		
 		</View>

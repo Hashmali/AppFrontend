@@ -11,7 +11,7 @@ import Profile from './Profile'
 import About from './About'
 import Reports from './Reports'
 import CreateReport from './CreateReport'
-
+import ViewReport from './ViewReport'
 import Tasks from './Tasks'
 import { createStackNavigator } from '@react-navigation/stack'
 const Tab = createMaterialBottomTabNavigator();
@@ -25,6 +25,10 @@ const ReportStackScreen=()=>(
   
   />
   <ReportStack.Screen name="CreateReport" component={CreateReport}/>
+  <ReportStack.Screen name="ViewReport" component={ViewReport} options={{
+    headerShown: false}}/>
+
+  
   </ReportStack.Navigator>
 
 )
