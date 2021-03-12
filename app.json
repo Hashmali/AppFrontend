@@ -20,29 +20,10 @@
             "supportsTablet": true
         },
         "android": {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-            "package": "com.hashmali.hashmali",
-            "versionCode": 1,
-            "adaptiveIcon": {
-            "foregroundImage": "./assets/adaptive-icon.png",
-            "backgroundColor": "#FFFFFF"
-            }
-        
-
-
-
-=======
->>>>>>> 0e806324882abc2fa1ccd8a1e2d1d82a47dc441c
             "adaptiveIcon": {
                 "foregroundImage": "./assets/adaptive-icon.png",
                 "backgroundColor": "#FFFFFF"
             }
-<<<<<<< HEAD
-=======
->>>>>>> 4d1101d4fe015d9f2229cc42d66820804559aa80
->>>>>>> 0e806324882abc2fa1ccd8a1e2d1d82a47dc441c
         },
         "web": {
             "favicon": "./assets/favicon.png"

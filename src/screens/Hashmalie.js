@@ -80,7 +80,6 @@ function MyTabs({navigation,toke,id}) {
 	  <Tab.Screen
         name="Reports"
         children={()=><ReportStackScreen toke={toke} id={id}/>}
-
         options={{
           tabBarLabel: 'Reports',
           tabBarIcon: ({ color }) => (

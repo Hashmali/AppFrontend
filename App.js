@@ -15,7 +15,7 @@ function GoToButton({ screenName }) {
   return (
     <Button
       title={`logout`}
-      color="white"
+      color="black"
       onPress={() => navigation.navigate(screenName)}
     />
   );

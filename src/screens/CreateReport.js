@@ -65,14 +65,7 @@ return(
     mode='outlined'
     onChangeText={text=>setDescription(text)}
 />
-<TextInput
-    label="Image"
-    style={styles.inputStyle}
-    theme={theme}
-    value={image}
-    mode='outlined'
-    onChangeText={text=>setImage(text)}
-/>
+
 <Button 
     style={styles.inputStyle}
     icon="upload"

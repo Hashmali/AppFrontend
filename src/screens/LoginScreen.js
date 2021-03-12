@@ -40,7 +40,7 @@ const LoginScreen = ({ navigation }) => {
       headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify({ username: phone.value,password:password.value })
       };
-      fetch('https://656d9eb045df.ngrok.io/api/worker/login/',requestOptions)
+      fetch('https://hashmali-backend.herokuapp.com/api/worker/login/',requestOptions)
       .then(data=>data.json())
       .then(data=>{check(data)})
       .catch(error=>console.error(error))

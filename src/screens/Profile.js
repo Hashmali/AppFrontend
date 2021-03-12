@@ -1,6 +1,10 @@
+import { format } from 'prettier';
 import React,{useState,useEffect} from 'react';
 import { Text,View,StyleSheet,Image} from 'react-native';
 import Background from '../components/Background'
+import {LinearGradient} from 'expo-linear-gradient'
+import {Title,Card,Button} from "react-native-paper"
+import {MaterialIcons} from "@expo/vector-icons"
 const Profile = (props) => {
 	useEffect(()=>{
 		fetchItems();
@@ -19,7 +23,7 @@ const Profile = (props) => {
 		const [status,setStatus]=useState("")
 		const fetchItems= async ()=>{
 		const data=await fetch(url,requestOptions).catch(error=>console.error(error));
-	console.log(JSON.stringify(data))
+			console.log(JSON.stringify(data))
 
 		setStatus(data.status)
 		const items=await data.json();
@@ -27,29 +31,76 @@ const Profile = (props) => {
 		};
 		if(status=="200"){
 			return (
-				<Background>
-				<View style={{  alignItems: 'center' }}>
+			<View style={StyleSheet.root}>
+			<LinearGradient
+			colors={["#2e2e2e","#2e2e2e"]}
+			style={{height:"20%"}}
+			>
+			</LinearGradient>
+							
+			<View style={{alignItems:"center"}}>
 				<Image
-					source={{
-						uri: items.image,
-					}}
+					source={{uri: items.image,}}
 					style={styles.pic}
 					/>
-
-		<Text style={styles.text} >{items.second_name+" "+items.first_name}</Text>
-				<Text style={styles.text1} >{items.phone}</Text>
 				</View>
-				</Background>
+				<View style={{alignItems:"center"}}>
+				<Title>My Profile</Title>
+				</View>
+
+
+				<Card style={styles.myCard}>
+					<View style={styles.cardContent}>
+					<MaterialIcons name="account-box" size={32} color ="black"/>
+					<Text style={styles.myText}>{items.second_name+" "+items.first_name}</Text>
+					</View>
+				</Card>
+
+				<Card style={styles.myCard}>
+					<View style={styles.cardContent}>
+					<MaterialIcons name="email" size={32} color ="black"/>
+					<Text style={styles.myText}>{items.email}</Text>
+					</View>
+				</Card>
+				<Card style={styles.myCard}>
+					<View style={styles.cardContent}>
+					<MaterialIcons name="phone" size={32} color ="black"/>
+					<Text style={styles.myText}>{items.phone}</Text>
+					</View>
+				</Card>
+				<Card style={styles.myCard}>
+					<View style={styles.cardContent}>
+					<MaterialIcons name="home" size={24} color="black" />
+					<Text style={styles.myText}>{items.address}</Text>
+					</View>
+				</Card>
+
+
+
+
+
+				<View style={{flexDirection:"row",padding:10,}}>
+				<Button
+				icon="account-edit"
+				mode="contained"
+				onPress={()=>console.log("pressed")}>
+					Edit
+				</Button>
+	
+				
+				</View>			
+	
+
+
+	
+				</View>
 			);
 		}
 	else{
 	return (
 		<Background>
-		<View style={{  alignItems: 'center' }}>
-			<Image source={require('../assets/default.png')} style={styles.pic} />
-			<Text style={styles.text} >Worker's First Name</Text>
-			<Text style={styles.text} >Worker's Second Name</Text>
-			<Text style={styles.text1} >Worker's Phone Number</Text>
+		<View style={{  alignItems: 'center',margin:15 }}>
+			<Text>rendering...</Text>
 			
 		</View>
 		</Background>
@@ -57,32 +108,30 @@ const Profile = (props) => {
 }
 }
 const styles = StyleSheet.create({
-	pic: {
-		width: 260,
-		height: 260,
-		borderRadius: 260 / 2,
-		overflow: "hidden",
-		borderWidth: 3,
+	root:{
+		flex:1,
+
+	},
+	myCard:{
+		margin:3,
+	},
+	cardContent:{
+		flexDirection:"row",
+		padding:8,
+	},
+	myText:{
+		fontSize:22,
+		marginTop:3,
+		marginLeft:5,
+
 	},
 
-	text: {
-		marginTop: 30,
-		
-		
-    	//paddingVertical: 8,
-		//justifyContent: 'center',
-		fontSize: 24,
-		fontWeight:'bold',
-		borderColor: "black",
-		textAlign: "center",
-		overflow: 'hidden'
-		},
-		text1: {
-			paddingTop:40,
-			justifyContent: 'center',
-			fontSize: 20,
-			borderRadius: 6,
-			borderColor: "black",
-			}
-  })
+	pic: {
+		width: 140,
+		height: 140,
+		borderRadius: 140/2,
+		marginTop: -50,
+	},
+	 
+		})
 export default Profile;
