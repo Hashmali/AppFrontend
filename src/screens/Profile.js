@@ -1,6 +1,6 @@
 import { format } from 'prettier';
 import React,{useState,useEffect} from 'react';
-import { Text,View,StyleSheet,Image} from 'react-native';
+import { Text,View,StyleSheet,Image,ActivityIndicator} from 'react-native';
 import Background from '../components/Background'
 import {LinearGradient} from 'expo-linear-gradient'
 import {Title,Card,Button} from "react-native-paper"
@@ -98,12 +98,10 @@ const Profile = (props) => {
 		}
 	else{
 	return (
-		<Background>
-		<View style={{  alignItems: 'center',margin:15 }}>
-			<Text>rendering...</Text>
-			
-		</View>
-		</Background>
+		<View style={[styles.container, styles.horizontal]}>
+		<ActivityIndicator />
+		<ActivityIndicator size="large" color="black" />
+	  </View>
 	);
 }
 }
@@ -133,5 +131,26 @@ const styles = StyleSheet.create({
 		marginTop: -50,
 	},
 	 
+	container: {
+		flex: 1,
+		justifyContent: "center"
+	  },
+	  horizontal: {
+		flexDirection: "row",
+		justifyContent: "space-around",
+		padding: 10
+	  },
+
+
+
+
+
+
+
+
+
+
+
+
 		})
 export default Profile;
