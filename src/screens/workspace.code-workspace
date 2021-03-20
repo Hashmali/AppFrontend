@@ -1,11 +1,11 @@
 {
-	"folders": [
-		{
-			"path": "../../../react-native-login-template"
-		},
-		{
-			"path": "../.."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "../../../react-native-login-template"
+    },
+    {
+      "path": "../.."
+    }
+  ],
+  "settings": {}
 }

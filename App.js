@@ -1,16 +1,18 @@
 import React from 'react'
 import { Provider } from 'react-native-paper'
-import { NavigationContainer,useNavigation, StyleSheet,CommonActions} from '@react-navigation/native'
+import {
+  NavigationContainer,
+  useNavigation,
+  StyleSheet,
+  CommonActions,
+} from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { theme } from './src/core/theme'
 import { Button } from 'react-native'
 
-import {
-  LoginScreen,
-  Hashmalie,
-} from './src/screens'
+import { LoginScreen, Hashmalie } from './src/screens'
 function GoToButton({ screenName }) {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   return (
     <Button
@@ -18,7 +20,7 @@ function GoToButton({ screenName }) {
       color="black"
       onPress={() => navigation.navigate(screenName)}
     />
-  );
+  )
 }
 
 const Stack = createStackNavigator()
@@ -34,18 +36,23 @@ const App = () => {
               fontWeight: 'bold',
               color: 'white',
             },
-            headerLeft:null,
-            headerStyle:{
-              backgroundColor:'black',
-            }
-           // headerShown: false,
+            headerLeft: null,
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            // headerShown: false,
           }}
-        >       
-          <Stack.Screen name="LoginScreen" component={LoginScreen}  />
-          <Stack.Screen name="Hashmalie" component={Hashmalie} options={{headerRight: 
-          ({navigation,route}) => (
-            <GoToButton screenName="LoginScreen" />
-    ),}} />
+        >
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen
+            name="Hashmalie"
+            component={Hashmalie}
+            options={{
+              headerRight: ({ navigation, route }) => (
+                <GoToButton screenName="LoginScreen" />
+              ),
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
