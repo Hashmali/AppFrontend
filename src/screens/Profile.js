@@ -81,7 +81,17 @@ const Profile = (props) => {
           <Button
             icon="account-edit"
             mode="contained"
-            onPress={() => navigation.navigate('EditProfile')}
+            onPress={() =>
+              navigation.navigate('EditProfile', {
+                first_name: items.first_name,
+                second_name: items.second_name,
+                email: items.email,
+                phone: items.phone,
+                address: items.address,
+                toke: toke,
+                id: props.id,
+              })
+            }
           >
             Edit
           </Button>
