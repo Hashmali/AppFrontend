@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Modal, Alert } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  Modal,
+  Alert,
+  ActivityIndicator,
+} from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions'
@@ -39,30 +46,35 @@ const EditProfile = (props) => {
   const [toke, setToke] = useState(getDetails('toke'))
   const [id, setID] = useState(getDetails('id'))
   const [modal, setModal] = useState(false)
+  const [loader, setLoader] = useState(false)
+
   var url = 'https://hashmali-backend.herokuapp.com/api/worker/' + id + '/edit/'
   console.log(toke)
-  const UpdateDetails = () => {
-    const newData = new FormData()
-    newData.append('first_name', first_name)
-    newData.append('second_name', second_name)
-    newData.append('email', email)
-    newData.append('phone', phone)
-    newData.append('address', address)
-    newData.append('image', image)
 
+  const UpdateDetails = () => {
     const requestOptions = {
       method: 'PATCH',
-      headers: { Authorization: toke },
-      body: newData,
+      headers: {
+        Authorization: toke,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        first_name: first_name,
+        second_name: second_name,
+      }),
     }
     return requestOptions
   }
 
-  const updateData = async () => {
+  const updateData = async (e) => {
+    e.preventDefault()
+    setLoader(true)
     const data = await fetch(url, UpdateDetails()).catch((error) =>
       console.log(error)
     )
-    console.log(data.status)
+    console.log(JSON.stringify(data))
+    setLoader(false)
   }
 
   const pickFromGallery = async () => {
@@ -101,6 +113,10 @@ const EditProfile = (props) => {
 
   return (
     <View style={styles.root}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        {loader && <Text>Loader is On</Text>}
+      </View>
+
       <TextInput
         label="First Name"
         style={styles.inputStyle}

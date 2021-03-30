@@ -22,34 +22,33 @@ const LoginScreen = ({ navigation }) => {
       setPassword({ ...password, error: passwordError })
       return
     }
-    sendRequest();
+    sendRequest()
   }
 
-  function check(data) {  
-    if(data.token)
-    {
-      navigation.navigate('Hashmalie',{toke:data.token,id:data.id})
-   
+  function check(data) {
+    if (data.token) {
+      navigation.navigate('Hashmalie', { toke: data.token, id: data.id })
+    } else {
+      alert('failed to login...')
     }
-    else{alert("failed to login...")}
   }
-  
+
   function sendRequest() {
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json'},
-      body: JSON.stringify({ username: phone.value,password:password.value })
-      };
-      fetch('https://hashmali-backend.herokuapp.com/api/worker/login/',requestOptions)
-      .then(data=>data.json())
-      .then(data=>{check(data)})
-      .catch(error=>console.error(error))
-          
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: phone.value, password: password.value }),
+    }
+    fetch(
+      'https://hashmali-backend.herokuapp.com/api/worker/login/',
+      requestOptions
+    )
+      .then((data) => data.json())
+      .then((data) => {
+        check(data)
+      })
+      .catch((error) => console.error(error))
   }
-
-
-
-
 
   return (
     <Background>
@@ -63,8 +62,6 @@ const LoginScreen = ({ navigation }) => {
         error={!!phone.error}
         errorText={phone.error}
         autoCapitalize="none"
-     
-        
         keyboardType="numeric"
       />
       <TextInput
@@ -76,19 +73,16 @@ const LoginScreen = ({ navigation }) => {
         errorText={password.error}
         secureTextEntry
       />
-      
+
       <Button mode="contained" onPress={onLoginPressed}>
         Login
       </Button>
-      <View style={styles.row}>
-      
-      </View>
+      <View style={styles.row}></View>
     </Background>
   )
 }
 
 const styles = StyleSheet.create({
-  
   row: {
     flexDirection: 'row',
     marginTop: 4,

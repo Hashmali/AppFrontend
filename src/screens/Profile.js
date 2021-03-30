@@ -21,15 +21,12 @@ const Profile = (props) => {
     method: 'GET',
     headers: { 'Content-Type': 'application/json', Authorization: toke },
   }
-  console.log(JSON.stringify(url))
   const [items, setItems] = useState([])
   const [status, setStatus] = useState('')
   const fetchItems = async () => {
     const data = await fetch(url, requestOptions).catch((error) =>
       console.error(error)
     )
-    console.log(JSON.stringify(data))
-
     setStatus(data.status)
     const items = await data.json()
     setItems(items)
