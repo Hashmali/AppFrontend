@@ -113,10 +113,6 @@ const EditProfile = (props) => {
 
   return (
     <View style={styles.root}>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        {loader && <Text>Loader is On</Text>}
-      </View>
-
       <TextInput
         label="First Name"
         style={styles.inputStyle}
@@ -211,6 +207,9 @@ const EditProfile = (props) => {
           </Button>
         </View>
       </Modal>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        {loader && <Text>Loader is On</Text>}
+      </View>
     </View>
   )
 }
