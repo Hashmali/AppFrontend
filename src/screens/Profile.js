@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { Title, Card, Button } from 'react-native-paper'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-
+import Loader from './Loader'
 const Profile = (props) => {
   useEffect(() => {
     fetchItems()
@@ -96,12 +96,7 @@ const Profile = (props) => {
       </View>
     )
   } else {
-    return (
-      <View style={[styles.container, styles.horizontal]}>
-        <ActivityIndicator />
-        <ActivityIndicator size="large" color="black" />
-      </View>
-    )
+    return <Loader></Loader>
   }
 }
 const styles = StyleSheet.create({

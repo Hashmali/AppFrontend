@@ -10,9 +10,11 @@ import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
 import { phoneValidator } from '../helpers/phoneValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
+import Loader from './Loader'
 const LoginScreen = ({ navigation }) => {
   const [phone, setPhone] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
+  const [loader, setLoader] = useState(false)
 
   const onLoginPressed = () => {
     const phoneError = phoneValidator(phone.value)
@@ -27,9 +29,12 @@ const LoginScreen = ({ navigation }) => {
 
   function check(data) {
     if (data.token) {
+      setLoader(false)
+
       navigation.navigate('Hashmalie', { toke: data.token, id: data.id })
     } else {
-      alert('failed to login...')
+      setLoader(false)
+      alert('failed to login...please try again!')
     }
   }
 
@@ -39,6 +44,8 @@ const LoginScreen = ({ navigation }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: phone.value, password: password.value }),
     }
+    setLoader(true)
+
     fetch(
       'https://hashmali-backend.herokuapp.com/api/worker/login/',
       requestOptions
@@ -48,6 +55,9 @@ const LoginScreen = ({ navigation }) => {
         check(data)
       })
       .catch((error) => console.error(error))
+  }
+  if (loader) {
+    return <Loader></Loader>
   }
 
   return (
@@ -74,8 +84,8 @@ const LoginScreen = ({ navigation }) => {
         secureTextEntry
       />
 
-      <Button mode="contained" onPress={onLoginPressed}>
-        Login
+      <Button icon="login" mode="contained" onPress={onLoginPressed}>
+        Log in
       </Button>
       <View style={styles.row}></View>
     </Background>

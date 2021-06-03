@@ -9,7 +9,7 @@ import {
 import { createStackNavigator } from '@react-navigation/stack'
 import { theme } from './src/core/theme'
 import { Button } from 'react-native'
-
+import './src/i18n/i18n'
 import { LoginScreen, Hashmalie } from './src/screens'
 function GoToButton({ screenName }) {
   const navigation = useNavigation()

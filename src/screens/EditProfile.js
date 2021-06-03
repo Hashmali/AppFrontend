@@ -1,12 +1,6 @@
 import React, { useState } from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  Modal,
-  Alert,
-  ActivityIndicator,
-} from 'react-native'
+import { StyleSheet, View, Text, Modal, Alert } from 'react-native'
+import Loader from './Loader'
 import { TextInput, Button } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions'
@@ -111,6 +105,10 @@ const EditProfile = (props) => {
     }
   }
 
+  if (loader) {
+    return <Loader></Loader>
+  }
+
   return (
     <View style={styles.root}>
       <TextInput
@@ -207,9 +205,9 @@ const EditProfile = (props) => {
           </Button>
         </View>
       </Modal>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        {loader && <Text>Loader is On</Text>}
-      </View>
+      <View
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+      ></View>
     </View>
   )
 }
