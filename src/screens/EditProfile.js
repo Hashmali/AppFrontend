@@ -6,6 +6,8 @@ import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions'
 import DatePicker from 'react-native-datepicker'
 import { roundToNearestPixel } from 'react-native/Libraries/Utilities/PixelRatio'
+import { useNavigation } from '@react-navigation/native'
+
 const EditProfile = (props) => {
   const getDetails = (type) => {
     if (props.route.params) {
@@ -30,11 +32,13 @@ const EditProfile = (props) => {
     }
     return ''
   }
+  const navigation = useNavigation()
 
   const [first_name, setFirstName] = useState(getDetails('first_name'))
   const [second_name, setSecondName] = useState(getDetails('second_name'))
   const [email, setEmail] = useState(getDetails('email'))
   const [phone, setPhone] = useState(getDetails('phone'))
+  const [password, setPassword] = useState('')
   const [address, setAddress] = useState(getDetails('address'))
   const [image, setImage] = useState(getDetails('image'))
   const [toke, setToke] = useState(getDetails('toke'))
@@ -43,8 +47,6 @@ const EditProfile = (props) => {
   const [loader, setLoader] = useState(false)
 
   var url = 'https://hashmali-backend.herokuapp.com/api/worker/' + id + '/edit/'
-  console.log(toke)
-
   const UpdateDetails = () => {
     const requestOptions = {
       method: 'PATCH',
@@ -56,6 +58,10 @@ const EditProfile = (props) => {
       body: JSON.stringify({
         first_name: first_name,
         second_name: second_name,
+        phone: phone,
+        password: password,
+        email: email,
+        address: address,
       }),
     }
     return requestOptions
@@ -63,12 +69,26 @@ const EditProfile = (props) => {
 
   const updateData = async (e) => {
     e.preventDefault()
+    if (!password) {
+      Alert.alert('please provide password!')
+      return
+    }
+
     setLoader(true)
     const data = await fetch(url, UpdateDetails()).catch((error) =>
       console.log(error)
     )
-    console.log(JSON.stringify(data))
     setLoader(false)
+
+    if (data.status === 200) {
+      Alert.alert('Successfully updated data!')
+
+      navigation.goBack()
+    } else {
+      Alert.alert('Oops something went wrong!')
+    }
+
+    console.log(JSON.stringify(data.status))
   }
 
   const pickFromGallery = async () => {
@@ -144,6 +164,15 @@ const EditProfile = (props) => {
         mode="outlined"
         onChangeText={(text) => setPhone(text)}
       />
+      <TextInput
+        label="Password"
+        type="password"
+        style={styles.inputStyle}
+        theme={theme}
+        value={password}
+        mode="outlined"
+        onChangeText={(text) => setPassword(text)}
+      />
 
       <TextInput
         label="Address"
@@ -170,9 +199,17 @@ const EditProfile = (props) => {
         theme={theme}
         onPress={updateData}
       >
-        Send Report
+        Update Profile
       </Button>
-
+      <Button
+        style={styles.inputStyle}
+        icon="keyboard-backspace"
+        mode="contained"
+        theme={theme}
+        onPress={() => navigation.goBack()}
+      >
+        CANCEL
+      </Button>
       <Modal
         animationType="slide"
         transparent={true}

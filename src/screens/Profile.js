@@ -8,9 +8,6 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import Loader from './Loader'
 const Profile = (props) => {
-  useEffect(() => {
-    fetchItems()
-  }, [])
   var toke = 'Token ' + props.toke + ' '
   var url =
     'https://hashmali-backend.herokuapp.com/api/worker/' + props.id + '/view/'
@@ -31,6 +28,19 @@ const Profile = (props) => {
     const items = await data.json()
     setItems(items)
   }
+
+  useEffect(() => {
+    fetchItems()
+  }, [])
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchItems()
+    })
+
+    return unsubscribe
+  }, [navigation])
+
   if (status == '200') {
     return (
       <View style={StyleSheet.root}>
@@ -74,7 +84,13 @@ const Profile = (props) => {
           </View>
         </Card>
 
-        <View style={{ flexDirection: 'row', padding: 10 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: 10,
+          }}
+        >
           <Button
             icon="account-edit"
             mode="contained"
