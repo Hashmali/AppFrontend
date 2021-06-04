@@ -4,9 +4,11 @@ import Loader from './Loader'
 import { TextInput, Button } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions'
+import * as MediaLibrary from 'expo-media-library'
 import DatePicker from 'react-native-datepicker'
 import { roundToNearestPixel } from 'react-native/Libraries/Utilities/PixelRatio'
 import { useNavigation } from '@react-navigation/native'
+import { Camera } from 'expo-camera'
 
 const EditProfile = (props) => {
   const getDetails = (type) => {
@@ -40,15 +42,35 @@ const EditProfile = (props) => {
   const [phone, setPhone] = useState(getDetails('phone'))
   const [password, setPassword] = useState('')
   const [address, setAddress] = useState(getDetails('address'))
-  const [image, setImage] = useState(getDetails('image'))
+  const [pic, setPic] = useState('')
   const [toke, setToke] = useState(getDetails('toke'))
   const [id, setID] = useState(getDetails('id'))
   const [modal, setModal] = useState(false)
   const [loader, setLoader] = useState(false)
 
   var url = 'https://hashmali-backend.herokuapp.com/api/worker/' + id + '/edit/'
+  var url2 = 'https://api.cloudinary.com/v1_1/dj42j4pqu/image/upload'
+
   const UpdateDetails = () => {
-    const requestOptions = {
+    const option1 = {
+      method: 'PATCH',
+      headers: {
+        Authorization: toke,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        first_name: first_name,
+        second_name: second_name,
+        phone: phone,
+        password: password,
+        email: email,
+        address: address,
+        image: pic,
+      }),
+    }
+
+    const option2 = {
       method: 'PATCH',
       headers: {
         Authorization: toke,
@@ -64,7 +86,10 @@ const EditProfile = (props) => {
         address: address,
       }),
     }
-    return requestOptions
+    if (pic) {
+      return option1
+    }
+    return option2
   }
 
   const updateData = async (e) => {
@@ -92,7 +117,7 @@ const EditProfile = (props) => {
   }
 
   const pickFromGallery = async () => {
-    const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+    const { granted } = await MediaLibrary.requestPermissionsAsync()
     if (granted) {
       let data = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -101,7 +126,14 @@ const EditProfile = (props) => {
         quality: 0.5,
       })
       if (!data.cancelled) {
-        setImage(data)
+        let newfile = {
+          uri: data.uri,
+          type: `test/${data.uri.split('.')[1]}`,
+          name: `test/${data.uri.split('.')[1]}`,
+        }
+        handleUpload(newfile)
+        console.log(data)
+        //setImage(data)
       }
     } else {
       Alert.alert('You need to give up permissions')
@@ -109,7 +141,7 @@ const EditProfile = (props) => {
   }
 
   const pickFromCamera = async () => {
-    const { granted } = await Permissions.askAsync(Permissions.CAMERA)
+    const { granted } = await Camera.requestPermissionsAsync()
     if (granted) {
       let data = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -118,7 +150,14 @@ const EditProfile = (props) => {
         quality: 0.5,
       })
       if (!data.cancelled) {
-        setImage(data)
+        let newfile = {
+          uri: data.uri,
+          type: `test/${data.uri.split('.')[1]}`,
+          name: `test/${data.uri.split('.')[1]}`,
+        }
+        handleUpload(newfile)
+        console.log(data)
+        //setImage(data)
       }
     } else {
       Alert.alert('You need to give up permissions')
@@ -127,6 +166,27 @@ const EditProfile = (props) => {
 
   if (loader) {
     return <Loader></Loader>
+  }
+
+  const handleUpload = (image) => {
+    console.log(image)
+    const data = new FormData()
+    data.append('file', image)
+    data.append('upload_preset', 'hashmaliProject')
+    data.append('cloud_name', 'dj42j4pqu')
+    setLoader(true)
+    fetch(url2, {
+      method: 'POST',
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        setPic(data.url)
+        setModal(false)
+      })
+      .catch((error) => alert('error while uploading...'))
+    setLoader(false)
   }
 
   return (
@@ -185,7 +245,7 @@ const EditProfile = (props) => {
 
       <Button
         style={styles.inputStyle}
-        icon="upload"
+        icon={pic == '' ? 'upload' : 'check'}
         mode="contained"
         theme={theme}
         onPress={() => setModal(true)}
