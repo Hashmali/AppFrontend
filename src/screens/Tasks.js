@@ -12,25 +12,6 @@ import {
 import { useNavigation } from '@react-navigation/native'
 import Loader from './Loader'
 
-const DATA = [
-  {
-    title: '20.1.2021',
-    data: ['work', 'work', 'work'],
-  },
-  {
-    title: '21.1.2021',
-    data: ['work', 'work', 'work', 'work'],
-  },
-  {
-    title: '22.1.2021',
-    data: ['work', 'work', 'work'],
-  },
-  {
-    title: '23.1.2021',
-    data: ['work', 'work'],
-  },
-]
-
 const Item = ({ title }) => (
   <View style={styles.item}>
     <Text style={styles.title}>{title}</Text>
@@ -83,10 +64,12 @@ const Tasks = (props) => {
   }
 
   if (status == '200') {
+    const userTasks = items.filter((item) => item.id === props.id)
+
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={items}
+          data={userTasks}
           renderItem={({ item }) => {
             return renderList(item)
           }}
@@ -104,6 +87,7 @@ const styles = StyleSheet.create({
   mycard: {
     margin: 5,
     padding: 5,
+    backgroundColor: 'black',
   },
   cardView: {
     flexDirection: 'row',
@@ -111,6 +95,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 30,
     marginLeft: 10,
+    color: 'white',
+
     alignItems: 'center',
     fontWeight: 'bold',
   },

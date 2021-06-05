@@ -19,27 +19,32 @@ const ViewTask = (props) => {
     image,
   } = props.route.params.item
   return (
-    <View style={StyleSheet.root}>
+    <View style={styles.root}>
       <Card>
         <Card.Content>
           <View
-            style={{ alignItems: 'center', justifyContent: 'space-around' }}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              backgroundColor: 'black',
+              marginBottom: 10,
+            }}
           >
-            <Title style={{ fontWeight: 'bold' }}>
+            <Title style={{ fontWeight: 'bold', color: 'white' }}>
               {'Task Title: ' + title}
             </Title>
           </View>
 
           <Card style={styles.myCard}>
             <View style={styles.cardContent}>
-              <MaterialIcons name="date-range" size={32} color="black" />
+              <MaterialIcons name="date-range" size={32} color="orange" />
               <Text style={styles.myText}>{date}</Text>
             </View>
           </Card>
 
           <Card style={styles.myCard}>
             <View style={styles.cardContent}>
-              <MaterialIcons name="badge" size={32} color="black" />
+              <MaterialIcons name="badge" size={32} color="orange" />
               <Text style={styles.myText}>
                 {'Project: ' + project.project_code}
               </Text>
@@ -47,7 +52,7 @@ const ViewTask = (props) => {
           </Card>
           <Card style={styles.myCard}>
             <View style={styles.cardContent}>
-              <MaterialIcons name="engineering" size={32} color="black" />
+              <MaterialIcons name="engineering" size={32} color="orange" />
               <Text style={styles.myText}>
                 {'Worker: ' + worker.first_name + ' ' + worker.second_name}
               </Text>
@@ -56,7 +61,7 @@ const ViewTask = (props) => {
 
           <Card style={styles.myCard}>
             <View style={styles.cardContent}>
-              <MaterialIcons name="description" size={32} color="black" />
+              <MaterialIcons name="description" size={32} color="orange" />
               <Text style={styles.myText}>{'Description: ' + description}</Text>
             </View>
           </Card>
@@ -71,6 +76,7 @@ const styles = StyleSheet.create({
   },
   myCard: {
     margin: 3,
+    backgroundColor: 'black',
   },
   cardContent: {
     flexDirection: 'row',
@@ -80,6 +86,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginLeft: 5,
+    color: 'white',
   },
 
   pic: {

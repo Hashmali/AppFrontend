@@ -51,12 +51,12 @@ const Profile = (props) => {
           <Image source={{ uri: items.image }} style={styles.pic} />
         </View>
         <View style={{ alignItems: 'center' }}>
-          <Title>My Profile</Title>
+          <Title style={{ fontWeight: 'bold' }}>My Profile</Title>
         </View>
 
         <Card style={styles.myCard}>
           <View style={styles.cardContent}>
-            <MaterialIcons name="account-box" size={32} color="black" />
+            <MaterialIcons name="account-box" size={32} color="orange" />
             <Text style={styles.myText}>
               {items.second_name + ' ' + items.first_name}
             </Text>
@@ -65,19 +65,19 @@ const Profile = (props) => {
 
         <Card style={styles.myCard}>
           <View style={styles.cardContent}>
-            <MaterialIcons name="email" size={32} color="black" />
+            <MaterialIcons name="email" size={32} color="orange" />
             <Text style={styles.myText}>{items.email}</Text>
           </View>
         </Card>
         <Card style={styles.myCard}>
           <View style={styles.cardContent}>
-            <MaterialIcons name="phone" size={32} color="black" />
+            <MaterialIcons name="phone" size={32} color="orange" />
             <Text style={styles.myText}>{items.phone}</Text>
           </View>
         </Card>
         <Card style={styles.myCard}>
           <View style={styles.cardContent}>
-            <MaterialIcons name="home" size={24} color="black" />
+            <MaterialIcons name="home" size={24} color="orange" />
             <Text style={styles.myText}>{items.address}</Text>
           </View>
         </Card>
@@ -118,6 +118,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   myCard: {
+    backgroundColor: 'black',
+
     margin: 3,
   },
   cardContent: {
@@ -126,6 +128,7 @@ const styles = StyleSheet.create({
   },
   myText: {
     fontSize: 22,
+    color: 'white',
     marginTop: 3,
     marginLeft: 5,
   },

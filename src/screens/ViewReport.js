@@ -18,13 +18,17 @@ const ViewReport = (props) => {
     image,
   } = props.route.params.item
   return (
-    <View style={StyleSheet.root}>
+    <View style={styles.root}>
       <Card>
         <Card.Content>
           <View
-            style={{ alignItems: 'center', justifyContent: 'space-around' }}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              backgroundColor: 'black',
+            }}
           >
-            <Title style={{ fontWeight: 'bold' }}>
+            <Title style={{ fontWeight: 'bold', color: 'white' }}>
               {'Report Title: ' + title}
             </Title>
           </View>
@@ -35,25 +39,25 @@ const ViewReport = (props) => {
 
           <Card style={styles.myCard}>
             <View style={styles.cardContent}>
-              <MaterialIcons name="date-range" size={32} color="black" />
+              <MaterialIcons name="date-range" size={32} color="orange" />
               <Text style={styles.myText}>{date}</Text>
             </View>
           </Card>
           <Card style={styles.myCard}>
             <View style={styles.cardContent}>
-              <MaterialIcons name="history" size={32} color="black" />
+              <MaterialIcons name="history" size={32} color="orange" />
               <Text style={styles.myText}>{'Started At: ' + start_hour}</Text>
             </View>
           </Card>
           <Card style={styles.myCard}>
             <View style={styles.cardContent}>
-              <MaterialIcons name="update" size={32} color="black" />
+              <MaterialIcons name="update" size={32} color="orange" />
               <Text style={styles.myText}>{'Finished At: ' + ending_hour}</Text>
             </View>
           </Card>
           <Card style={styles.myCard}>
             <View style={styles.cardContent}>
-              <MaterialIcons name="badge" size={32} color="black" />
+              <MaterialIcons name="badge" size={32} color="orange" />
               <Text style={styles.myText}>
                 {'Project: ' + project.project_code}
               </Text>
@@ -61,7 +65,7 @@ const ViewReport = (props) => {
           </Card>
           <Card style={styles.myCard}>
             <View style={styles.cardContent}>
-              <MaterialIcons name="description" size={32} color="black" />
+              <MaterialIcons name="description" size={32} color="orange" />
               <Text style={styles.myText}>{'Description: ' + description}</Text>
             </View>
           </Card>
@@ -73,9 +77,11 @@ const ViewReport = (props) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    backgroundColor: 'black',
   },
   myCard: {
     margin: 3,
+    backgroundColor: 'black',
   },
   cardContent: {
     flexDirection: 'row',
@@ -85,6 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginLeft: 5,
+    color: 'white',
   },
 
   pic: {

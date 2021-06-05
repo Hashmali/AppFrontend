@@ -63,7 +63,12 @@ const Reports = (props) => {
           style={styles.fab}
           small={false}
           icon="plus"
-          onPress={() => navigation.push('CreateReport')}
+          onPress={() =>
+            navigation.push('CreateReport', {
+              id: props.id,
+              toke: toke,
+            })
+          }
           theme={{ colors: { accent: 'black' } }}
         />
       </View>
@@ -78,20 +83,23 @@ const styles = StyleSheet.create({
   mycard: {
     margin: 5,
     padding: 5,
+    backgroundColor: 'black',
   },
   cardView: {
     flexDirection: 'row',
   },
   text: {
     fontSize: 30,
+    color: 'white',
     marginLeft: 10,
     alignItems: 'center',
     fontWeight: 'bold',
   },
   fab: {
     position: 'absolute',
-    margin: 16,
+    margin: 15,
     right: 0,
     bottom: 0,
+    backgroundColor: 'blue',
   },
 })
