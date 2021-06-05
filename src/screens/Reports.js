@@ -6,6 +6,7 @@ import Loader from './Loader'
 
 const Reports = (props) => {
   const navigation = useNavigation()
+
   var toke = 'Token ' + props.toke + ' '
   var url = 'https://hashmali-backend.herokuapp.com/api/report/'
   const requestOptions = {
@@ -15,10 +16,15 @@ const Reports = (props) => {
 
   const [items, setItems] = useState([])
   const [status, setStatus] = useState('')
+  const [loader, setLoader] = useState(false)
+
   const fetchItems = async () => {
+    setLoader(true)
     const data = await fetch(url, requestOptions).catch((error) =>
       console.error(error)
     )
+    setLoader(false)
+
     setStatus(data.status)
     const items = await data.json()
     setItems(items)
@@ -27,13 +33,6 @@ const Reports = (props) => {
   useEffect(() => {
     fetchItems()
   }, [])
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetchItems()
-    })
-
-    return unsubscribe
-  }, [navigation])
 
   const renderList = (item) => {
     return (
@@ -49,15 +48,22 @@ const Reports = (props) => {
     )
   }
 
+  if (loader) {
+    return <Loader></Loader>
+  }
+
   if (status == '200') {
+    const userReports = items.filter((item) => item.worker.id === props.id)
     return (
       <View>
         <FlatList
-          data={items}
+          data={userReports}
           renderItem={({ item }) => {
             return renderList(item)
           }}
           keyExtractor={(item) => `${item.id}`}
+          onRefresh={() => fetchItems()}
+          refreshing={loader}
         />
         <FAB
           style={styles.fab}

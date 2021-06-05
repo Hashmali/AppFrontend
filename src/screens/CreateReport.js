@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, Modal, Alert } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View, Modal, Text, Alert } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions'
 import DatePicker from 'react-native-datepicker'
 import { useNavigation } from '@react-navigation/native'
+import RNPickerSelect from 'react-native-picker-select'
+import Loader from './Loader'
 
 const CreateReport = (props) => {
   const getDetails = (type) => {
@@ -24,14 +26,17 @@ const CreateReport = (props) => {
   const [date, setDate] = useState('')
   const [start_hour, setStartHour] = useState('')
   const [ending_hour, setEndingHour] = useState('')
+  const [projects, setProjects] = useState([])
   const [project_code, setProjectCode] = useState('')
   const [image, setImage] = useState('')
+  const [loader, setLoader] = useState(false)
 
   const [pic, setPic] = useState('')
   const [description, setDescription] = useState('')
   const [modal, setModal] = useState(false)
   const [toke, setToke] = useState(getDetails('toke'))
   const [id, setID] = useState(getDetails('id'))
+  const [status, setStatus] = useState('')
 
   var url = 'https://hashmali-backend.herokuapp.com/api/report/create/'
   var url2 = 'https://api.cloudinary.com/v1_1/dj42j4pqu/image/upload'
@@ -152,133 +157,179 @@ const CreateReport = (props) => {
     }
   }
 
-  return (
-    <View style={styles.root}>
-      <TextInput
-        label="Title"
-        style={styles.inputStyle}
-        theme={theme}
-        value={title}
-        mode="outlined"
-        onChangeText={(text) => setTitle(text)}
-      />
-      <TextInput
-        label="Start Hour"
-        style={styles.inputStyle}
-        theme={theme}
-        value={start_hour}
-        mode="outlined"
-        onChangeText={(text) => setStartHour(text)}
-      />
+  const projectsRequest = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json', Authorization: toke },
+  }
 
-      <TextInput
-        label="Ending Hour"
-        style={styles.inputStyle}
-        theme={theme}
-        value={ending_hour}
-        mode="outlined"
-        onChangeText={(text) => setEndingHour(text)}
-      />
-      <TextInput
-        label="Project Code"
-        style={styles.inputStyle}
-        theme={theme}
-        value={project_code}
-        mode="outlined"
-        onChangeText={(text) => setProjectCode(text)}
-      />
+  const loadProjects = async () => {
+    const data = await fetch(url3, projectsRequest).catch((error) =>
+      console.error(error)
+    )
 
-      <TextInput
-        label="Description"
-        style={styles.inputStyle}
-        theme={theme}
-        value={description}
-        mode="outlined"
-        onChangeText={(text) => setDescription(text)}
-      />
+    setStatus(data.status)
+    const projects_data = await data.json()
+    setProjects(projects_data)
+    console.log(projects)
+  }
 
-      <View style={styles.container}>
-        <DatePicker
-          style={styles.datePickerStyle}
-          date={date} // Initial date from state
-          mode="date" // The enum of date, datetime and time
-          placeholder="select date"
-          format="DD-MM-YYYY"
-          minDate="13-03-2021"
-          maxDate="01-01-3001"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          customStyles={{
-            dateIcon: {
-              //display: 'none',
-              position: 'absolute',
-              left: 0,
-              top: 4,
-              marginLeft: 0,
-            },
-            dateInput: {
-              marginLeft: 36,
-            },
-          }}
-          onDateChange={(date) => {
-            setDate(date)
-          }}
+  useEffect(() => {
+    if (toke) {
+      loadProjects()
+    }
+  }, [toke])
+
+  if (loader) {
+    return <Loader></Loader>
+  }
+
+  if (status == '200') {
+    return (
+      <View style={styles.root}>
+        <TextInput
+          label="Title"
+          style={styles.inputStyle}
+          theme={theme}
+          value={title}
+          mode="outlined"
+          onChangeText={(text) => setTitle(text)}
         />
-      </View>
+        <TextInput
+          label="Start Hour"
+          style={styles.inputStyle}
+          theme={theme}
+          value={start_hour}
+          mode="outlined"
+          onChangeText={(text) => setStartHour(text)}
+        />
 
-      <Button
-        style={styles.inputStyle}
-        icon="upload"
-        mode="contained"
-        theme={theme}
-        onPress={() => setModal(true)}
-      >
-        Upload Image
-      </Button>
-      <Button
-        style={styles.inputStyle}
-        icon="content-save"
-        mode="contained"
-        theme={theme}
-        onPress={addReport}
-      >
-        Create Report
-      </Button>
+        <TextInput
+          label="Ending Hour"
+          style={styles.inputStyle}
+          theme={theme}
+          value={ending_hour}
+          mode="outlined"
+          onChangeText={(text) => setEndingHour(text)}
+        />
+        {projects ? (
+          <View>
+            <Text>select project</Text>
+            <RNPickerSelect
+              onValueChange={(value) => setProjectCode(value)}
+              items={projects.map((project) => ({
+                key: project.id,
+                label: project.project_code,
+                value: project.id,
+                color: 'rgba(77,38,22,1)',
+              }))}
+            />
+            <Text>{project_code}</Text>
+          </View>
+        ) : null}
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modal}
-        onRequestClose={() => {
-          setModal(false)
-        }}
-      >
-        <View style={styles.modalView}>
-          <View style={styles.modalButtonView}>
-            <Button
-              icon="camera"
-              mode="contained"
-              theme={theme}
-              onPress={() => pickFromCamera()}
-            >
-              camera
-            </Button>
-            <Button
-              icon="image-area"
-              mode="contained"
-              onPress={() => pickFromGallery()}
-            >
-              gallery
+        <TextInput
+          label="Project Code"
+          style={styles.inputStyle}
+          theme={theme}
+          value={project_code}
+          mode="outlined"
+          onChangeText={(text) => setProjectCode(text)}
+        />
+
+        <TextInput
+          label="Description"
+          style={styles.inputStyle}
+          theme={theme}
+          value={description}
+          mode="outlined"
+          onChangeText={(text) => setDescription(text)}
+        />
+
+        <View style={styles.container}>
+          <DatePicker
+            style={styles.datePickerStyle}
+            date={date} // Initial date from state
+            mode="date" // The enum of date, datetime and time
+            placeholder="select date"
+            format="DD-MM-YYYY"
+            minDate="13-03-2021"
+            maxDate="01-01-3001"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateIcon: {
+                //display: 'none',
+                position: 'absolute',
+                left: 0,
+                top: 4,
+                marginLeft: 0,
+              },
+              dateInput: {
+                marginLeft: 36,
+              },
+            }}
+            onDateChange={(date) => {
+              setDate(date)
+            }}
+          />
+        </View>
+
+        <Button
+          style={styles.inputStyle}
+          icon="upload"
+          mode="contained"
+          theme={theme}
+          onPress={() => setModal(true)}
+        >
+          Upload Image
+        </Button>
+        <Button
+          style={styles.inputStyle}
+          icon="content-save"
+          mode="contained"
+          theme={theme}
+          onPress={addReport}
+        >
+          Create Report
+        </Button>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modal}
+          onRequestClose={() => {
+            setModal(false)
+          }}
+        >
+          <View style={styles.modalView}>
+            <View style={styles.modalButtonView}>
+              <Button
+                icon="camera"
+                mode="contained"
+                theme={theme}
+                onPress={() => pickFromCamera()}
+              >
+                camera
+              </Button>
+              <Button
+                icon="image-area"
+                mode="contained"
+                onPress={() => pickFromGallery()}
+              >
+                gallery
+              </Button>
+            </View>
+
+            <Button icon="camera" theme={theme} onPress={() => setModal(false)}>
+              cancel
             </Button>
           </View>
-
-          <Button icon="camera" theme={theme} onPress={() => setModal(false)}>
-            cancel
-          </Button>
-        </View>
-      </Modal>
-    </View>
-  )
+        </Modal>
+      </View>
+    )
+  } else {
+    return <Loader></Loader>
+  }
 }
 
 const styles = StyleSheet.create({
@@ -314,6 +365,10 @@ const styles = StyleSheet.create({
   datePickerStyle: {
     width: 200,
     marginTop: 20,
+  },
+  iconContainer: {
+    top: 10,
+    right: 12,
   },
 })
 const theme = { colors: { primary: 'black' } }

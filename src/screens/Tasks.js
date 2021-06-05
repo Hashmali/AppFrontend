@@ -28,10 +28,15 @@ const Tasks = (props) => {
 
   const [items, setItems] = useState([])
   const [status, setStatus] = useState('')
+  const [loader, setLoader] = useState(false)
+
   const fetchItems = async () => {
+    setLoader(true)
     const data = await fetch(url, requestOptions).catch((error) =>
       console.error(error)
     )
+    setLoader(false)
+
     setStatus(data.status)
     const items = await data.json()
     setItems(items)
@@ -40,14 +45,6 @@ const Tasks = (props) => {
   useEffect(() => {
     fetchItems()
   }, [])
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetchItems()
-    })
-
-    return unsubscribe
-  }, [navigation])
 
   const renderList = (item) => {
     return (
@@ -63,8 +60,12 @@ const Tasks = (props) => {
     )
   }
 
+  if (loader) {
+    return <Loader></Loader>
+  }
+
   if (status == '200') {
-    const userTasks = items.filter((item) => item.id === props.id)
+    const userTasks = items.filter((item) => item.worker.id === props.id)
 
     return (
       <SafeAreaView style={styles.container}>
@@ -74,6 +75,8 @@ const Tasks = (props) => {
             return renderList(item)
           }}
           keyExtractor={(item) => `${item.id}`}
+          onRefresh={() => fetchItems()}
+          refreshing={loader}
         />
       </SafeAreaView>
     )

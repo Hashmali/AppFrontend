@@ -11,6 +11,8 @@ import { theme } from './src/core/theme'
 import { Button } from 'react-native'
 import './src/i18n/i18n'
 import { LoginScreen, Hashmalie } from './src/screens'
+import { I18nManager } from 'react-native'
+
 function GoToButton({ screenName }) {
   const navigation = useNavigation()
 
@@ -26,6 +28,12 @@ function GoToButton({ screenName }) {
 const Stack = createStackNavigator()
 
 const App = () => {
+  try {
+    I18nManager.allowRTL(false)
+  } catch (e) {
+    console.log(e)
+  }
+
   return (
     <Provider theme={theme}>
       <NavigationContainer>

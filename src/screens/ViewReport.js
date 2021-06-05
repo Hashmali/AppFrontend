@@ -17,6 +17,7 @@ const ViewReport = (props) => {
     project,
     image,
   } = props.route.params.item
+
   return (
     <View style={styles.root}>
       <Card>
