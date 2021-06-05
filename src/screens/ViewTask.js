@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper'
 import { MaterialIcons } from '@expo/vector-icons'
 
-const ViewReport = (props) => {
+const ViewTask = (props) => {
   const {
     id,
     title,
@@ -15,6 +15,7 @@ const ViewReport = (props) => {
     ending_hour,
     description,
     project,
+    worker,
     image,
   } = props.route.params.item
   return (
@@ -25,12 +26,8 @@ const ViewReport = (props) => {
             style={{ alignItems: 'center', justifyContent: 'space-around' }}
           >
             <Title style={{ fontWeight: 'bold' }}>
-              {'Report Title: ' + title}
+              {'Task Title: ' + title}
             </Title>
-          </View>
-
-          <View style={{ alignItems: 'center' }}>
-            <Image source={{ uri: image }} style={styles.pic} />
           </View>
 
           <Card style={styles.myCard}>
@@ -39,18 +36,7 @@ const ViewReport = (props) => {
               <Text style={styles.myText}>{date}</Text>
             </View>
           </Card>
-          <Card style={styles.myCard}>
-            <View style={styles.cardContent}>
-              <MaterialIcons name="history" size={32} color="black" />
-              <Text style={styles.myText}>{'Started At: ' + start_hour}</Text>
-            </View>
-          </Card>
-          <Card style={styles.myCard}>
-            <View style={styles.cardContent}>
-              <MaterialIcons name="update" size={32} color="black" />
-              <Text style={styles.myText}>{'Finished At: ' + ending_hour}</Text>
-            </View>
-          </Card>
+
           <Card style={styles.myCard}>
             <View style={styles.cardContent}>
               <MaterialIcons name="badge" size={32} color="black" />
@@ -59,6 +45,15 @@ const ViewReport = (props) => {
               </Text>
             </View>
           </Card>
+          <Card style={styles.myCard}>
+            <View style={styles.cardContent}>
+              <MaterialIcons name="engineering" size={32} color="black" />
+              <Text style={styles.myText}>
+                {'Worker: ' + worker.first_name + ' ' + worker.second_name}
+              </Text>
+            </View>
+          </Card>
+
           <Card style={styles.myCard}>
             <View style={styles.cardContent}>
               <MaterialIcons name="description" size={32} color="black" />
@@ -93,4 +88,4 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 })
-export default ViewReport
+export default ViewTask

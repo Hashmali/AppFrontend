@@ -15,16 +15,37 @@ import Reports from './Reports'
 import CreateReport from './CreateReport'
 import ViewReport from './ViewReport'
 import Tasks from './Tasks'
+import ViewTask from './ViewTask'
 import { createStackNavigator } from '@react-navigation/stack'
 const Tab = createMaterialBottomTabNavigator()
 const ReportStack = createStackNavigator()
 const ProfileStack = createStackNavigator()
+const TaskStack = createStackNavigator()
 
-const ReportStackScreen = () => (
+const TasksStackScreen = (props) => (
+  <TaskStack.Navigator>
+    <TaskStack.Screen
+      name="Tasks"
+      children={() => <Tasks toke={props.toke} id={props.id} />}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <TaskStack.Screen
+      name="ViewTask"
+      component={ViewTask}
+      options={{
+        headerShown: false,
+      }}
+    />
+  </TaskStack.Navigator>
+)
+
+const ReportStackScreen = (props) => (
   <ReportStack.Navigator>
     <ReportStack.Screen
       name="Reports"
-      component={Reports}
+      children={() => <Reports toke={props.toke} id={props.id} />}
       options={{
         headerShown: false,
       }}
@@ -113,7 +134,7 @@ function MyTabs({ toke, id }) {
       />
       <Tab.Screen
         name="Tasks"
-        children={() => <Tasks toke={toke} id={id} />}
+        children={() => <TasksStackScreen toke={toke} id={id} />}
         options={{
           tabBarLabel: 'Tasks',
           tabBarIcon: ({ color }) => (

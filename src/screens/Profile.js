@@ -11,8 +11,6 @@ const Profile = (props) => {
   var toke = 'Token ' + props.toke + ' '
   var url =
     'https://hashmali-backend.herokuapp.com/api/worker/' + props.id + '/view/'
-  var url =
-    'https://hashmali-backend.herokuapp.com/api/worker/' + props.id + '/view/'
   const navigation = useNavigation()
   const requestOptions = {
     method: 'GET',
