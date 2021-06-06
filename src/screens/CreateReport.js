@@ -7,6 +7,7 @@ import DatePicker from 'react-native-datepicker'
 import { useNavigation } from '@react-navigation/native'
 import RNPickerSelect from 'react-native-picker-select'
 import Loader from './Loader'
+import Icon from 'react-native-vector-icons/Entypo.js'
 
 const CreateReport = (props) => {
   const getDetails = (type) => {
@@ -213,28 +214,30 @@ const CreateReport = (props) => {
         />
         {projects ? (
           <View>
-            <Text>select project</Text>
-            <RNPickerSelect
-              onValueChange={(value) => setProjectCode(value)}
-              items={projects.map((project) => ({
-                key: project.id,
-                label: project.project_code,
-                value: project.id,
-                color: 'rgba(77,38,22,1)',
-              }))}
+            <TextInput
+              mode="outlined"
+              label="please select a project"
+              value={project_code}
+              render={() => (
+                <RNPickerSelect
+                  items={projects.map((project) => ({
+                    key: project.id,
+                    label: project.project_code,
+                    value: String(project.id),
+                    color: 'rgba(77,38,22,1)',
+                  }))}
+                  onValueChange={(value) => setProjectCode(value)}
+                  placeholder={{ label: '', value: '' }}
+                  useNativeAndroidPickerStyle={false}
+                  style={pickerStyles}
+                  Icon={() => (
+                    <Icon name="chevron-down" size={22} color="gray" />
+                  )}
+                />
+              )}
             />
-            <Text>{project_code}</Text>
           </View>
         ) : null}
-
-        <TextInput
-          label="Project Code"
-          style={styles.inputStyle}
-          theme={theme}
-          value={project_code}
-          mode="outlined"
-          onChangeText={(text) => setProjectCode(text)}
-        />
 
         <TextInput
           label="Description"
@@ -371,6 +374,33 @@ const styles = StyleSheet.create({
     right: 12,
   },
 })
+
+const pickerStyles = StyleSheet.create({
+  iconContainer: {
+    justifyContent: 'center',
+    height: '100%',
+    marginRight: 5,
+  },
+  inputIOS: {
+    fontSize: 16,
+    height: 56,
+    paddingHorizontal: 14,
+    color: 'black',
+    textAlignVertical: 'center',
+    width: '100%',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 16,
+    height: 56,
+    paddingHorizontal: 14,
+    color: 'black',
+    textAlignVertical: 'center',
+    width: '100%',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+})
+
 const theme = { colors: { primary: 'black' } }
 
 export default CreateReport
