@@ -3,13 +3,65 @@ import { StyleSheet, View, Modal, Text, Alert } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions'
-import DatePicker from 'react-native-datepicker'
 import { useNavigation } from '@react-navigation/native'
 import RNPickerSelect from 'react-native-picker-select'
 import Loader from './Loader'
 import Icon from 'react-native-vector-icons/Entypo.js'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
 
 const CreateReport = (props) => {
+  //----------------------------------------------------------------------------------
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true)
+  }
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false)
+  }
+
+  const handleConfirm = (date) => {
+    setDate(date)
+    console.log('A date has been picked: ', date)
+    hideDatePicker()
+  }
+  //----------------------------------------------------------------------------------
+
+  const [isStartTimeVisible, setStartTimeVisibility] = useState(false)
+
+  const showStartTimePicker = () => {
+    setStartTimeVisibility(true)
+  }
+
+  const hideStartTimePicker = () => {
+    setStartTimeVisibility(false)
+  }
+
+  const handleStartTimeConfirm = (date) => {
+    setStartHour(date)
+    console.log('A start time has been picked: ', date)
+    hideStartTimePicker()
+  }
+  //----------------------------------------------------------------------------------
+
+  const [isEndTimeVisible, setEndTimeVisibility] = useState(false)
+
+  const showEndTimePicker = () => {
+    setEndTimeVisibility(true)
+  }
+
+  const hideEndTimePicker = () => {
+    setEndTimeVisibility(false)
+  }
+
+  const handleEndTimeConfirm = (date) => {
+    setEndingHour(date)
+    console.log('An end time has been picked: ', date)
+    hideEndTimePicker()
+  }
+  //----------------------------------------------------------------------------------
+
   const getDetails = (type) => {
     if (props.route.params) {
       switch (type) {
@@ -102,6 +154,14 @@ const CreateReport = (props) => {
       Alert.alert('please provide ending hour!')
       return
     }
+    if (
+      start_hour &&
+      ending_hour & (start_hour.getTime() > ending_hour.getTime())
+    ) {
+      alert("start hour can't be greater than ending hour")
+      return
+    }
+
     if (!date) {
       Alert.alert('please provide date!')
       return
@@ -187,6 +247,110 @@ const CreateReport = (props) => {
   if (status == '200') {
     return (
       <View style={styles.root}>
+        <View
+          style={{ flexDirection: 'row', textAlign: 'center', marginLeft: 5 }}
+        >
+          <Button
+            style={styles.buttonStyle}
+            icon="calendar-month"
+            mode="contained"
+            theme={themeBlue}
+            onPress={showDatePicker}
+          >
+            Date
+          </Button>
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+          />
+
+          <Button
+            style={styles.buttonStyle}
+            icon="clock-in"
+            mode="contained"
+            theme={themeBlue}
+            onPress={showStartTimePicker}
+          >
+            Start Time
+          </Button>
+          <DateTimePickerModal
+            isVisible={isStartTimeVisible}
+            mode="time"
+            is24Hour={true}
+            onConfirm={handleStartTimeConfirm}
+            onCancel={hideStartTimePicker}
+          />
+
+          <Button
+            style={styles.buttonStyle}
+            icon="clock-out"
+            mode="contained"
+            theme={themeBlue}
+            onPress={showEndTimePicker}
+          >
+            End Time
+          </Button>
+
+          <DateTimePickerModal
+            isVisible={isEndTimeVisible}
+            mode="time"
+            is24Hour={true}
+            onConfirm={handleEndTimeConfirm}
+            onCancel={hideEndTimePicker}
+          />
+        </View>
+
+        <View style={{ flexDirection: 'row', textAlign: 'center' }}>
+          <TextInput
+            label="Date"
+            style={styles.inputStyle}
+            theme={theme}
+            mode="outlined"
+            value={
+              date
+                ? String(date.getFullYear()) +
+                  '/' +
+                  String(date.getMonth() + 1) +
+                  '/' +
+                  String(date.getDate())
+                : 'pick date'
+            }
+            editable={false}
+          />
+
+          <TextInput
+            label="Start Hour"
+            style={styles.inputStyle}
+            theme={theme}
+            mode="outlined"
+            value={
+              start_hour
+                ? String(start_hour.getHours()) +
+                  ':' +
+                  String(start_hour.getMinutes())
+                : 'pick start time'
+            }
+            editable={false}
+          />
+
+          <TextInput
+            label="Ending Hour"
+            style={styles.inputStyle}
+            theme={theme}
+            mode="outlined"
+            value={
+              ending_hour
+                ? String(ending_hour.getHours()) +
+                  ':' +
+                  String(ending_hour.getMinutes())
+                : 'pick end time'
+            }
+            editable={false}
+          />
+        </View>
+
         <TextInput
           label="Title"
           style={styles.inputStyle}
@@ -195,23 +359,7 @@ const CreateReport = (props) => {
           mode="outlined"
           onChangeText={(text) => setTitle(text)}
         />
-        <TextInput
-          label="Start Hour"
-          style={styles.inputStyle}
-          theme={theme}
-          value={start_hour}
-          mode="outlined"
-          onChangeText={(text) => setStartHour(text)}
-        />
 
-        <TextInput
-          label="Ending Hour"
-          style={styles.inputStyle}
-          theme={theme}
-          value={ending_hour}
-          mode="outlined"
-          onChangeText={(text) => setEndingHour(text)}
-        />
         {projects ? (
           <View>
             <TextInput
@@ -247,35 +395,6 @@ const CreateReport = (props) => {
           mode="outlined"
           onChangeText={(text) => setDescription(text)}
         />
-
-        <View style={styles.container}>
-          <DatePicker
-            style={styles.datePickerStyle}
-            date={date} // Initial date from state
-            mode="date" // The enum of date, datetime and time
-            placeholder="select date"
-            format="DD-MM-YYYY"
-            minDate="13-03-2021"
-            maxDate="01-01-3001"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                //display: 'none',
-                position: 'absolute',
-                left: 0,
-                top: 4,
-                marginLeft: 0,
-              },
-              dateInput: {
-                marginLeft: 36,
-              },
-            }}
-            onDateChange={(date) => {
-              setDate(date)
-            }}
-          />
-        </View>
 
         <Button
           style={styles.inputStyle}
@@ -341,6 +460,11 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     margin: 5,
+    minWidth: 120,
+  },
+  buttonStyle: {
+    margin: 5,
+    maxWidth: 125,
   },
   modalButtonView: {
     flexDirection: 'row',
@@ -402,5 +526,6 @@ const pickerStyles = StyleSheet.create({
 })
 
 const theme = { colors: { primary: 'black' } }
+const themeBlue = { colors: { primary: 'blue' } }
 
 export default CreateReport

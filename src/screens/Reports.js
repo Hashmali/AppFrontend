@@ -47,6 +47,21 @@ const Reports = (props) => {
       </Card>
     )
   }
+  //Delete Later
+  return (
+    <FAB
+      style={styles.fab}
+      small={false}
+      icon="plus"
+      onPress={() =>
+        navigation.push('CreateReport', {
+          id: props.id,
+          toke: toke,
+        })
+      }
+      theme={{ colors: { accent: 'black' } }}
+    />
+  )
 
   if (loader) {
     return <Loader></Loader>
