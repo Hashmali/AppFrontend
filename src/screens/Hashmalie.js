@@ -128,7 +128,7 @@ function MyTabs({ toke, id }) {
         options={{
           tabBarLabel: 'Reports',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={26} />
+            <MaterialCommunityIcons name="calendar" color={color} size={26} />
           ),
         }}
       />
@@ -138,7 +138,7 @@ function MyTabs({ toke, id }) {
         options={{
           tabBarLabel: 'Tasks',
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="calendar" size={24} color="white" />
+            <FontAwesome name="bell" size={24} color="white" />
           ),
         }}
       />

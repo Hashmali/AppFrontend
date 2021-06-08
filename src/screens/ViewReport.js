@@ -35,7 +35,9 @@ const ViewReport = (props) => {
           </View>
 
           <View style={{ alignItems: 'center' }}>
-            <Image source={{ uri: image }} style={styles.pic} />
+            {image ? (
+              <Image source={{ uri: image }} style={styles.pic} />
+            ) : null}
           </View>
 
           <Card style={styles.myCard}>

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Modal, Text, Alert } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
+import * as MediaLibrary from 'expo-media-library'
+import { Camera } from 'expo-camera'
 import * as Permissions from 'expo-permissions'
 import { useNavigation } from '@react-navigation/native'
 import RNPickerSelect from 'react-native-picker-select'
@@ -83,7 +85,6 @@ const CreateReport = (props) => {
   const [project_code, setProjectCode] = useState('')
   const [image, setImage] = useState('')
   const [loader, setLoader] = useState(false)
-
   const [pic, setPic] = useState('')
   const [description, setDescription] = useState('')
   const [modal, setModal] = useState(false)
@@ -96,8 +97,27 @@ const CreateReport = (props) => {
   var url3 = 'https://hashmali-backend.herokuapp.com/api/project/'
 
   const reportOptions = () => {
+    let djangoFormatDate =
+      date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+
+    let djangoFormatStartTime =
+      String(start_hour.getHours()) +
+      ':' +
+      String(start_hour.getMinutes()) +
+      ':' +
+      String(start_hour.getSeconds())
+
+    let djangoFormatEndTime =
+      String(ending_hour.getHours()) +
+      ':' +
+      String(ending_hour.getMinutes()) +
+      ':' +
+      String(ending_hour.getSeconds())
+
+    console.log(djangoFormatDate)
+
     const option1 = {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         Authorization: toke,
         Accept: 'application/json',
@@ -106,28 +126,31 @@ const CreateReport = (props) => {
       body: JSON.stringify({
         title: title,
         description: description,
-        start_hour: start_hour,
-        ending_hour: ending_hour,
-        project: project,
+        project: project_code,
         worker: id,
         image: pic,
+        date: djangoFormatDate,
+        start_hour: djangoFormatStartTime,
+        ending_hour: djangoFormatEndTime,
       }),
     }
 
     const option2 = {
-      method: 'PATCH',
+      method: 'POST',
       headers: {
         Authorization: toke,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
+
       body: JSON.stringify({
         title: title,
         description: description,
-        start_hour: start_hour,
-        ending_hour: ending_hour,
-        project: project,
+        project: project_code,
         worker: id,
+        date: djangoFormatDate,
+        start_hour: djangoFormatStartTime,
+        ending_hour: djangoFormatEndTime,
       }),
     }
     if (pic) {
@@ -138,6 +161,7 @@ const CreateReport = (props) => {
 
   const addReport = async (e) => {
     e.preventDefault()
+
     if (!title) {
       Alert.alert('please provide title!')
       return
@@ -161,19 +185,28 @@ const CreateReport = (props) => {
       alert("start hour can't be greater than ending hour")
       return
     }
-
     if (!date) {
       Alert.alert('please provide date!')
       return
     }
+    /*
+    if (!pic) {
+      alert('please upload an image...')
+      return
+    }
+    */
+    if (!project_code) {
+      alert('please chose a project...')
+      return
+    }
 
     setLoader(true)
-    const data = await fetch(url, UpdateDetails()).catch((error) =>
+    const data = await fetch(url, reportOptions()).catch((error) =>
       console.log(error)
     )
     setLoader(false)
 
-    if (data.status === 200) {
+    if (data.status === 201) {
       Alert.alert('Successfully updated data!')
 
       navigation.goBack()
@@ -183,9 +216,31 @@ const CreateReport = (props) => {
 
     console.log(JSON.stringify(data.status))
   }
+  //--------------------
+
+  const handleUpload = (image) => {
+    console.log(image)
+    const data = new FormData()
+    data.append('file', image)
+    data.append('upload_preset', 'hashmaliProject')
+    data.append('cloud_name', 'dj42j4pqu')
+    setLoader(true)
+    fetch(url2, {
+      method: 'POST',
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        setPic(data.url)
+        setModal(false)
+      })
+      .catch((error) => alert('error while uploading...'))
+    setLoader(false)
+  }
 
   const pickFromGallery = async () => {
-    const { granted } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+    const { granted } = await MediaLibrary.requestPermissionsAsync()
     if (granted) {
       let data = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -194,7 +249,14 @@ const CreateReport = (props) => {
         quality: 0.5,
       })
       if (!data.cancelled) {
-        setImage(data)
+        let newfile = {
+          uri: data.uri,
+          type: `test/${data.uri.split('.')[1]}`,
+          name: `test/${data.uri.split('.')[1]}`,
+        }
+        handleUpload(newfile)
+        console.log(data)
+        //setImage(data)
       }
     } else {
       Alert.alert('You need to give up permissions')
@@ -202,7 +264,7 @@ const CreateReport = (props) => {
   }
 
   const pickFromCamera = async () => {
-    const { granted } = await Permissions.askAsync(Permissions.CAMERA)
+    const { granted } = await Camera.requestPermissionsAsync()
     if (granted) {
       let data = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -211,13 +273,21 @@ const CreateReport = (props) => {
         quality: 0.5,
       })
       if (!data.cancelled) {
-        setImage(data)
+        let newfile = {
+          uri: data.uri,
+          type: `test/${data.uri.split('.')[1]}`,
+          name: `test/${data.uri.split('.')[1]}`,
+        }
+        handleUpload(newfile)
+        console.log(data)
+        //setImage(data)
       }
     } else {
       Alert.alert('You need to give up permissions')
     }
   }
 
+  //--------------
   const projectsRequest = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json', Authorization: toke },
@@ -526,6 +596,6 @@ const pickerStyles = StyleSheet.create({
 })
 
 const theme = { colors: { primary: 'black' } }
-const themeBlue = { colors: { primary: 'blue' } }
+const themeBlue = { colors: { primary: 'black' } }
 
 export default CreateReport
