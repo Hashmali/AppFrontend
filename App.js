@@ -57,7 +57,7 @@ const App = () => {
             component={Hashmalie}
             options={{
               headerRight: ({ navigation, route }) => (
-                <GoToButton screenName="LoginScreen" />
+                <GoToButton screenName="Login Screen" />
               ),
             }}
           />
