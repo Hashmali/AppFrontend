@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "hashmaliapp",
-    "slug": "hashmaliapp",
+    "name": "hashmaliApplication",
+    "slug": "hashmaliApplication",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.saedjaber_ahmad.hashmaliapp"
+      "package": "com.saedjaber_ahmadsharbati.hashmaliApplication"
     },
     "web": {
       "favicon": "./assets/favicon.png"
